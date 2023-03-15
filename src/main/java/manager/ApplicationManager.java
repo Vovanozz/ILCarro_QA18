@@ -16,7 +16,9 @@ public class ApplicationManager {
         wd.navigate().to("https://ilcarro.web.app");
         wd.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 
+
     }
+
 
 
     public void stop(){
