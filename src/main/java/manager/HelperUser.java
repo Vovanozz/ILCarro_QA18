@@ -1,5 +1,6 @@
 package manager;
 
+import models.User;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -21,11 +22,22 @@ public class HelperUser extends HelperBase{
 public void fillLoginForm(String email,String password){
     type(By.id("email"), email);
     type(By.id("password"),password);
-}public void fillRegistrationForm(String name,String lastName,String email,String password){
+}
+public void fillLoginForm(User data){
+    type(By.id("email"),data.getEmail());
+    type(By.id("password"),data.getPassword());
+}
+public void fillRegistrationForm(String name,String lastName,String email,String password){
     type(By.id("email"), email);
     type(By.id("password"),password);
     type(By.id("name"),name);
     type(By.id("lastName"),lastName);
+}
+public void fillRegistrationForm(User user){
+    type(By.id("email"), user.getEmail());
+    type(By.id("password"),user.getPassword());
+    type(By.id("name"), user.getName());
+    type(By.id("lastName"), user.getLastName());
 }
 public void submitForm(){
       //click(By.cssSelector("button[type='submit']"));

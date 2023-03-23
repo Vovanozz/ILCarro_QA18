@@ -1,5 +1,6 @@
 package tests;
 
+import models.User;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -14,27 +15,31 @@ public class RegistrationTests extends TestBase{
 }
 @Test
     public void registrationPositiveTest(){
-        app.getUser().openRegistrationForm();
         int i=(int)((System.currentTimeMillis()/1000)%3600);
-        String name="Jon";
-        String lastName="Snow";
-        String email="jonsnow"+i+"@gmail.com";
-        String password="JonSnow12345$";
-        app.getUser().fillRegistrationForm(name,lastName,email,password);
-        app.getUser().clickCheckBox();
-        app.getUser().submitForm();
+    User user= User.builder()
+            .name("Jon")
+            .lastName("Snow")
+            .email("jonsnow"+i+"@gmail.com")
+            .password("JonSnow12345$"+i)
+            .build();
+    app.getUser().openRegistrationForm();
+    app.getUser().fillRegistrationForm(user);
+    app.getUser().clickCheckBox();
+    app.getUser().submitForm();
     Assert.assertTrue(app.getUser().isRegisteredSuccess());
     Assert.assertTrue(app.getUser().isLogged());
 
 }@Test
     public void registrationEmailNegativeTest(){
-        app.getUser().openRegistrationForm();
         int i=(int)((System.currentTimeMillis()/1000)%3600);
-        String name="Jon";
-        String lastName="Snow";
-        String email="jonsnow"+i+"gmail.com";
-        String password="JonSnow12345$";
-        app.getUser().fillRegistrationForm(name,lastName,email,password);
+        User user= User.builder()
+                .name("Jon")
+                .lastName("Snow")
+                .email("jonsnow"+i+"gmail.com")
+                .password("JonSnow12345$"+i)
+                .build();
+        app.getUser().openRegistrationForm();
+        app.getUser().fillRegistrationForm(user);
         app.getUser().clickCheckBox();
     Assert.assertTrue(app.getUser().isRegisteredFailedFromEmail());
     Assert.assertFalse(app.getUser().isLogged());
@@ -42,13 +47,15 @@ public class RegistrationTests extends TestBase{
 
 }@Test
     public void registrationPasswordNegativeTest(){
-        app.getUser().openRegistrationForm();
         int i=(int)((System.currentTimeMillis()/1000)%3600);
-        String name="Jon";
-        String lastName="Snow";
-        String email="jonsnow"+i+"@gmail.com";
-        String password="jon";
-        app.getUser().fillRegistrationForm(name,lastName,email,password);
+        User user= User.builder()
+                .name("Jon")
+                .lastName("Snow")
+                .email("jonsnow"+i+"@gmail.com")
+                .password("jon")
+                .build();
+        app.getUser().openRegistrationForm();
+        app.getUser().fillRegistrationForm(user);
         app.getUser().clickCheckBox();
     Assert.assertTrue(app.getUser().isRegisteredFailedFromPassword());
     Assert.assertFalse(app.getUser().isLogged());
