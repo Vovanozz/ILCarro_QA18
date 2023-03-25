@@ -24,7 +24,7 @@ public class RegistrationTests extends TestBase{
             .build();
     app.getUser().openRegistrationForm();
     app.getUser().fillRegistrationForm(user);
-    app.getUser().clickCheckBox();
+    app.getUser().clickCheckBox2();
     app.getUser().submitForm();
     Assert.assertTrue(app.getUser().isRegisteredSuccess());
     Assert.assertTrue(app.getUser().isLogged());

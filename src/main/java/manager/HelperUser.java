@@ -3,7 +3,9 @@ package manager;
 import models.User;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Rectangle;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -39,15 +41,23 @@ public void fillRegistrationForm(User user){
     type(By.id("name"), user.getName());
     type(By.id("lastName"), user.getLastName());
 }
-public void submitForm(){
-      //click(By.cssSelector("button[type='submit']"));
-      wd.findElement(By.cssSelector("button[type='submit']")).submit();
-}
+    public void submitForm(){
+        wd.findElement(By.cssSelector("button[type='submit']")).submit();
+    }
 public void clickCheckBox(){
 
         JavascriptExecutor js  = (JavascriptExecutor) wd;
         js.executeScript("document.querySelector('#terms-of-use').checked=true;");
 
+    }
+    public void clickCheckBox2(){
+//        JavascriptExecutor script= (JavascriptExecutor) wd;
+//        script.executeScript("document.querySelector('#terms-of-use').click();");
+        Rectangle rect =wd.findElement(By.xpath("//*[@class='checkbox-container']")).getRect();
+        int x=rect.getX()+5;
+        int y= rect.getY()+5;
+        Actions actions=new Actions(wd);
+        actions.moveByOffset(x,y).click().perform();
     }
 
 public void closeDialogContainer(){
