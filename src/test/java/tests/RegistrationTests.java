@@ -22,10 +22,16 @@ public class RegistrationTests extends TestBase{
             .email("jonsnow"+i+"@gmail.com")
             .password("JonSnow12345$"+i)
             .build();
+
+    logger.info("registrationPositiveTest starts with: " + user.getEmail() + " & " + user.getPassword());
+
     app.getUser().openRegistrationForm();
     app.getUser().fillRegistrationForm(user);
     app.getUser().clickCheckBox2();
     app.getUser().submitForm();
+
+    logger.info("registrationPositiveTest completed");
+
     Assert.assertTrue(app.getUser().isRegisteredSuccess());
     Assert.assertTrue(app.getUser().isLogged());
 
