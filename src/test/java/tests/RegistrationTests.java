@@ -1,5 +1,6 @@
 package tests;
 
+import manager.ProviderData;
 import models.User;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
@@ -14,36 +15,37 @@ public class RegistrationTests extends TestBase{
         }
 }
 @Test
-    public void registrationPositiveTest(){
+    public void registrationPositiveTest(User user){
         int i=(int)((System.currentTimeMillis()/1000)%3600);
-    User user= User.builder()
-            .name("Jon")
-            .lastName("Snow")
-            .email("jonsnow"+i+"@gmail.com")
-            .password("JonSnow12345$"+i)
-            .build();
 
     logger.info("registrationPositiveTest starts with: " + user.getEmail() + " & " + user.getPassword());
 
     app.getUser().openRegistrationForm();
     app.getUser().fillRegistrationForm(user);
-    app.getUser().clickCheckBox2();
+    app.getUser().clickCheckBox();
     app.getUser().submitForm();
 
     logger.info("registrationPositiveTest completed");
 
     Assert.assertTrue(app.getUser().isRegisteredSuccess());
     Assert.assertTrue(app.getUser().isLogged());
+}
+@Test(dataProvider = "registrationCSV",dataProviderClass = ProviderData.class)
+    public void registrationPositiveTestCSV(User user){
+        logger.info("registrationPositiveTest starts with: " + user.getEmail() + " & " + user.getPassword());
 
-}@Test
-    public void registrationEmailNegativeTest(){
+        app.getUser().openRegistrationForm();
+        app.getUser().fillRegistrationForm(user);
+        app.getUser().clickCheckBox();
+        app.getUser().submitForm();
+
+        logger.info("registrationPositiveTest completed");
+
+        Assert.assertTrue(app.getUser().isRegisteredSuccess());
+        Assert.assertTrue(app.getUser().isLogged());}
+@Test
+    public void registrationEmailNegativeTest(User user){
         int i=(int)((System.currentTimeMillis()/1000)%3600);
-        User user= User.builder()
-                .name("Jon")
-                .lastName("Snow")
-                .email("jonsnow"+i+"gmail.com")
-                .password("JonSnow12345$"+i)
-                .build();
         app.getUser().openRegistrationForm();
         app.getUser().fillRegistrationForm(user);
         app.getUser().clickCheckBox();
@@ -52,14 +54,8 @@ public class RegistrationTests extends TestBase{
     Assert.assertTrue(app.getUser().yallaButtonNotActive());
 
 }@Test
-    public void registrationPasswordNegativeTest(){
+    public void registrationPasswordNegativeTest(User user){
         int i=(int)((System.currentTimeMillis()/1000)%3600);
-        User user= User.builder()
-                .name("Jon")
-                .lastName("Snow")
-                .email("jonsnow"+i+"@gmail.com")
-                .password("jon")
-                .build();
         app.getUser().openRegistrationForm();
         app.getUser().fillRegistrationForm(user);
         app.getUser().clickCheckBox();

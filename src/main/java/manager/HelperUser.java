@@ -26,6 +26,7 @@ public void fillLoginForm(String email,String password){
     type(By.id("password"),password);
 }
 public void fillLoginForm(User data){
+
     type(By.id("email"),data.getEmail());
     type(By.id("password"),data.getPassword());
 }

@@ -1,25 +1,26 @@
 package tests;
 
+import manager.NGListener;
+import manager.ProviderData;
 import models.User;
 import org.openqa.selenium.By;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
-public class LoginTests extends TestBase{
+
+public class LoginTests extends TestBase {
     @BeforeMethod
-    public void preCondition(){
-        if(app.getUser().isLogged()){
+    public void preCondition() {
+        if (app.getUser().isLogged()) {
             app.getUser().logout();
         }
     }
-    @Test
-    public void loginPositiveTest(){
-        User user= User.builder()
-                .email("vladimir@gmail.com")
-                .password("Vova12345$")
-                .build();
+
+    @Test(dataProvider = "loginModelDto", dataProviderClass = ProviderData.class)
+    public void loginPositiveTest(User user) {
         app.getUser().openLoginForm();
         app.getUser().fillLoginForm(user);
         app.getUser().submitForm();
@@ -28,28 +29,41 @@ public class LoginTests extends TestBase{
 
     }
     @Test
-    public void loginNegativeTestEmail(){
-        User user= User.builder()
-                .email("vladimirgmail.com")
-                .password("Vova12345$")
-                .build();
+    public void loginPositiveTestConfig() {
         app.getUser().openLoginForm();
-        app.getUser().fillLoginForm(user);
-        Assert.assertTrue(app.getUser().isLoggedFailed());
+        app.getUser().fillLoginForm(app.getEmail(), app.getPassword());
+        app.getUser().submitForm();
 
-//        Assert.assertTrue(app.getUser().yallaButtonNotActive());
-//        Assert.assertEquals(app.getUser().getErrorText(),"It'snot look like email");
-//        Assert.assertFalse(app.getUser().isLogged());
+        Assert.assertTrue(app.getUser().isLoggedSuccess());
 
     }
-    @Test
-    public void loginNegativeTestPassword(){
-        User user= User.builder()
-                .email("vladimir@gmail.com")
-                .password("vov")
-                .build();
+    @Test(dataProvider = "registrationCSV", dataProviderClass = ProviderData.class)
+    public void loginPositiveTestFromFile(User user) {
         app.getUser().openLoginForm();
         app.getUser().fillLoginForm(user);
+        app.getUser().submitForm();
+
+        Assert.assertTrue(app.getUser().isLoggedSuccess());
+
+    }
+
+
+    @Test
+    public void loginNegativeTestWrongEmail() {
+        User data = new User().withEmail("vladimirgmail.com").withPassword("Vova12345$");
+        app.getUser().openLoginForm();
+        app.getUser().fillLoginForm(data);
+        Assert.assertTrue(app.getUser().isLoggedFailed());
+    }
+
+
+
+
+    @Test
+    public void loginNegativeTestPassword(){
+       User data=new User().withEmail("vladimir@gmail.com").withPassword("vova12345");
+        app.getUser().openLoginForm();
+       app.getUser().fillLoginForm(data);
         app.getUser().submitForm();
         Assert.assertEquals(app.getUser().getMessage(),"\"Login or Password incorrect\"");
         app.getUser().closeDialogContainer();

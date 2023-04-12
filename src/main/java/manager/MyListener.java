@@ -16,13 +16,13 @@ public class MyListener extends AbstractWebDriverEventListener {
     @Override
     public void beforeFindBy(By by, WebElement element, WebDriver driver) {
         super.beforeFindBy(by, element, driver);
-        logger.info("Start searching element by:"+ by);
+        logger.info("Start searching element by locator:" + by);
     }
 
     @Override
     public void afterFindBy(By by, WebElement element, WebDriver driver) {
         super.afterFindBy(by, element, driver);
-        logger.info("The element with locator by:"+ by+ " is found successfully!");
+        logger.info("The element with locator "+ by+ " is found successfully!");
     }
 
     @Override
@@ -30,6 +30,10 @@ public class MyListener extends AbstractWebDriverEventListener {
         super.onException(throwable, driver);
         logger.info("SOMETHING WENT WRONG!!!");
         logger.info(throwable.getMessage());
-        logger.info(String.valueOf(throwable.fillInStackTrace()));
+        logger.info(String.valueOf(throwable.fillInStackTrace().getMessage()));
+        int i=(int)((System.currentTimeMillis()/1000)%3600);
+        String link="src/test/screenshots"+i+".png";
+        new HelperBase(driver).takeScreenShot(link);
+        logger.info("Here  is the link to screenshot with error: "+ link);
     }
 }
